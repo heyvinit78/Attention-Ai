@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1117">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>AttentionAI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="logo" aria-hidden="true"></span>
+    <div><h1>AttentionAI</h1><p>Real-time focus tracker</p></div>
+  </div>
+  <span id="livePill" class="pill">Idle</span>
+</header>
+<div class="controls">
+  <button id="btnStart" class="btn primary">Start session</button>
+  <button id="btnStop" class="btn" disabled>Stop session</button>
+  <button id="btnMute" class="btn" aria-pressed="false">Alerts on</button>
+  <button id="btnExport" class="btn">Export CSV</button>
+</div>
+<div id="error" class="error" role="alert" hidden></div>
+
+<main class="layout">
+  <section class="card video">
+    <div class="card-head"><h2>Live feed</h2><span id="fps" class="muted">FPS --</span></div>
+    <div class="frame" id="frame">
+      <video id="cam" playsinline muted></video>
+      <canvas id="overlay"></canvas>
+      <div id="placeholder" class="placeholder">Press <b>Start session</b> to turn on the camera.<br>
+        Video is processed on this device only and is never uploaded.</div>
+    </div>
+    <p class="note">Estimated attention from webcam landmarks. Not a medical or scientifically validated measurement.</p>
+  </section>
+
+  <aside class="side">
+    <section id="statusCard" class="card status" data-state="idle">
+      <div class="status-row">
+        <span class="dot"></span>
+        <div><div id="statusName" class="status-name">Idle</div>
+          <div id="statusHint" class="muted">Start a session to begin</div></div>
+        <div id="attn" class="attn">--</div>
+      </div>
+      <div class="bar"><i id="attnBar"></i></div>
+    </section>
+
+    <section class="tiles">
+      <div class="card tile"><b id="ear">--</b><span>Eye aspect ratio</span></div>
+      <div class="card tile"><b id="bpm">--</b><span>Blinks / min</span></div>
+      <div class="card tile"><b id="gaze">--</b><span>Gaze (approx.)</span></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Head pose</h2><span class="muted" id="calib"></span></div>
+      <div class="pose" data-k="yaw"><span>Yaw</span><div class="track"><i></i></div><b>0°</b></div>
+      <div class="pose" data-k="pitch"><span>Pitch</span><div class="track"><i></i></div><b>0°</b></div>
+      <div class="pose" data-k="roll"><span>Roll</span><div class="track"><i></i></div><b>0°</b></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Session</h2><span id="duration" class="clock">00:00:00</span></div>
+      <div class="summary">
+        <div id="donut" class="donut"><div><b id="focusPct">--</b><span>focused</span></div></div>
+        <ul class="times">
+          <li><i class="c-green"></i>Focused<b id="tFocused">0s</b></li>
+          <li><i class="c-yellow"></i>Distracted<b id="tDistracted">0s</b></li>
+          <li><i class="c-red"></i>Drowsy<b id="tDrowsy">0s</b></li>
+          <li><i class="c-gray"></i>No face<b id="tNoFace">0s</b></li>
+        </ul>
+      </div>
+      <div class="stats2"><span>Blinks <b id="blinks">0</b></span><span>Status changes <b id="trans">0</b></span></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head"><h2>Focus trend</h2><span class="muted">last 2 min</span></div>
+      <canvas id="trend" height="110"></canvas>
+    </section>
+  </aside>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
